@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.contenttypes.models import ContentType
-
+from .controller import observer
 from m3 import ApplicationLogicException
 from objectpack.actions import ObjectPack
 from . import ui
@@ -24,8 +24,9 @@ class ContentTypePack(ObjectPack):
     
     add_to_menu = True
 
-    add_window = ModelEditWindow.fabricate(model=ContentType)
+    add_window = edit_window = ModelEditWindow.fabricate(model=ContentType)
 
+    column_name_on_select = 'model'
       
 class UserPack(ObjectPack):
     
@@ -110,7 +111,7 @@ class PermissionPack(ObjectPack):
   
     add_to_menu = True
     
-    add_window = edit_window = ui.PermissionAddWindow
+    add_window = edit_window =  ModelEditWindow.fabricate(Permission, model_register = observer)
 
     can_delete =True
 # actions.py
